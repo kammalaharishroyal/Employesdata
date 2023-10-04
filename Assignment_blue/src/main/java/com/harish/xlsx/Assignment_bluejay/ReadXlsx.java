@@ -18,29 +18,35 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ReadXlsx {
-	
-	public static void main(String[] args) {
 		
-		List<EmployeeData> employedatalist=readXLSXFile("C:\\Users\\haris\\OneDrive\\Desktop\\A11.xlsx");
-//		System.out.println(employedatalist);
-//		EmployeeData e1=employedatalist.get(0);
-//		EmployeeData e2=employedatalist.get(1);
-//		System.out.println(e1);
-//		System.out.println(e2);
-//		LocalTime t1=e1.TimecardHours;
-//		LocalTime t2=e2.TimecardHours;
-//		LocalTime total=t1.plusHours(t2.getHour()).plusMinutes(t2.getMinute());
-	//	System.out.println(total);
-		HashMap<String,EmployeeInfo> map=new HashMap<String,EmployeeInfo>();
+		ReadXlsx(String FilePath_XLSX) {
+//		#Reading XLSX File as input and Converting into EmployeeDatalist Object
+		List<EmployeeData> employedatalist=readXLSXFile(FilePath_XLSX);
+//		#Storing Each Employes data as on Object from EmployeeDataList
+		HashMap<String,EmployeeInfo> map=DateStable(employedatalist);
 		
+		System.out.println("Name and PostionIds with 7 consecitive workdays");
+//		#Calling SevenConsecutive Days function to show the Employee name and Id who worked 7 Conecutive days
+		sevenConsecutiveDays(map);
+		System.out.println("----------");
+		System.out.println("Name and PostionIds with less Than 10 hours: and greater than 1hr");
+//		#Calling lessThan10Hours  function to show the Employee name and Id who worked less than 10 and greater than 1Hour
+		lessThan10Hours(map);
+		System.out.println("----------");
+		System.out.println("Name and PostionIds with more than 14 hours work");
+//		#Calling morethan14hrs  function to show the Employee name and Id who worked more than 7 hours
+		morethan14hrs(map);
+		System.out.println("----------");
+
+	}
+
+	private static HashMap<String, EmployeeInfo> DateStable(List<EmployeeData> employedatalist) {
+		HashMap<String, EmployeeInfo> map=new HashMap<>();
 		
 		for(EmployeeData empdat:employedatalist)
 		{	
-			
-			
 			if(map.containsKey(empdat.PositionID))
 			{EmployeeInfo etemporary=map.get(empdat.PositionID);
-//			System.out.println("empinfo"+etemporary);
 			if(etemporary.worktimeMapping.containsKey(empdat.workdate)) {
 				LocalTime t11=empdat.TimecardHours;
 				LocalTime t22=etemporary.worktimeMapping.get(empdat.workdate);				
@@ -56,77 +62,48 @@ public class ReadXlsx {
 		else
 		{EmployeeInfo einfo=new EmployeeInfo();
 		einfo.PositionID=empdat.PositionID;
+		einfo.empName=empdat.EmployerName;
 		einfo.worktimeMapping.put(empdat.workdate,empdat.TimecardHours);
 		map.put(empdat.PositionID, einfo);
-	//	System.out.println("empdat:"+empdat);
-		
-		
-			
+	
 		}
-		
-		
 		}
 		for(EmployeeData empdat:employedatalist)
 		{
-			if(empdat.workdate.plusDays(1).isEqual(empdat.workout)&&(map.get(empdat.PositionID).worktimeMapping.get(empdat.workdate))!=null&&map.get(empdat.PositionID).worktimeMapping.get(empdat.workout)!=null)
-			{	//System.out.println("1"+empdat.workdate+"2."+empdat.workout);
+			if(empdat.workdate.plusDays(1).isEqual(empdat.workout)&&(map.get(empdat.PositionID).worktimeMapping.get(empdat.workdate))!=null&&map.get(empdat.PositionID).worktimeMapping.get(empdat.workout)!=null&&map.get(empdat.PositionID).worktimeMapping.get(empdat.workdate).getHour()<6)
+			{	
 				LocalTime lt1=map.get(empdat.PositionID).worktimeMapping.get(empdat.workout);
 			
 				LocalTime lt2=map.get(empdat.PositionID).worktimeMapping.get(empdat.workdate);
-//				System.out.println("lt2:"+lt2);
+
 				map.get(empdat.PositionID).worktimeMapping.remove(empdat.workout);
 				LocalTime lt3=lt1.plusHours(lt2.getHour()).plusMinutes(lt2.getMinute());
 				map.get(empdat.PositionID).worktimeMapping.put(empdat.workdate, lt3);
 			}
 		}
-	
-//		System.out.println("WFS000336:---out"+map.get("WFS000336"));
-		System.out.println("PostionIds with less Than 7 hours:");
-		lessThan10Hours(map);
-//		System.out.println("PostionIds with 7 consecitive workdays");
-//		sevenConsecutiveDays(map);
-//		morethan14hrs(map);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		return map;
 	}
 
 	private static void morethan14hrs(HashMap<String, EmployeeInfo> map) {
-		int c=0;
+		
+		int i=0;
 		for(String key:map.keySet())
-		{
+		{	
 			EmployeeInfo e=map.get(key);
-			int t=0,cx=0;
+			int t=0;
 			for(LocalDate wdate:e.worktimeMapping.keySet())
-			{	//System.out.println(e.worktimeMapping.get(wdate));
+			{
 				if(e.worktimeMapping.get(wdate).getHour()>=14)
 				{
-					t++;
-//					System.out.println("in"+e.worktimeMapping.get(wdate)+"t:"+t);
-					
+					t++;	
 				}
 				
 				
 			}
 			if(t>=1)
 			{	
-				System.out.println("MoreThan14hrs: "+e.PositionID);
+				System.out.println(i+"). "+e.empName+" , "+e.PositionID);
+				i++;
 			}
 			
 		}
@@ -135,7 +112,7 @@ public class ReadXlsx {
 
 	private static void sevenConsecutiveDays(HashMap<String, EmployeeInfo> map) {
 		for(String poid:map.keySet())
-		{int ct=0;
+		{int ct=0,ii=0;
 			EmployeeInfo etemp=map.get(poid);
 			for(LocalDate ldt1:etemp.worktimeMapping.keySet())
 			{int xt=0;
@@ -154,15 +131,13 @@ public class ReadXlsx {
 				if(xt==6)
 				{ct=1;
 				break;
-//					System.out.println("pid:"+poid+"7 dates"+ldt1);
 				}
 			
 			}
 			if(ct==1)
 			{
-				
-			
-			System.out.println(etemp.PositionID);
+				System.out.println(ii+"). "+etemp.empName+" , "+etemp.PositionID);
+				ii++;
 			}
 			
 		}
@@ -170,11 +145,11 @@ public class ReadXlsx {
 	}
 
 	private static void lessThan10Hours(HashMap<String, EmployeeInfo> map) {
-		int c=0;
+		int i=0;
 		for(String key:map.keySet())
 		{
 			EmployeeInfo e=map.get(key);
-			int t=0,cx=0;
+			int t=0;
 			for(LocalDate wdate:e.worktimeMapping.keySet())
 			{	
 				if(e.worktimeMapping.get(wdate).getHour()>=10)
@@ -185,12 +160,11 @@ public class ReadXlsx {
 				
 			}
 			if(t==0)
-			{	c++;
-				System.out.println(e.PositionID);
+			{	System.out.println(i+"). "+e.empName+" ,   "+e.PositionID);
+			i++;
 			}
 			
 		}
-//		System.out.println(map.size()+"c"+c);
 		
 	}
 
@@ -233,12 +207,10 @@ public class ReadXlsx {
 			    
 			    	
 			    }
-			   // System.out.println("after o"+time);
 			    if(time.length()==1)
 			    {
 			    	time="00:00";
-			    	//System.out.println("lenght is 1");
-			    	//TimecardHours= LocalTime.parse("00:00");
+			    	
 			    	TimecardHours=null;
 			    	
 			    }else
@@ -246,18 +218,12 @@ public class ReadXlsx {
 			    	
 			    }
 			    
-//			    System.out.println("time:"+time);
-//			    System.out.println(TimecardHours);
 				workdate=convertStringDateToLocalDate(stringworkdate);
 				PayCycleStartDate=convertStringDateToLocalDate(stringpcsd);
 				PayCycleEndDate=convertStringDateToLocalDate(stringpced);
 				workout=convertStringDateToLocalDate(stringworkout);
-//				System.out.println(PositionID+PositionStatus+workdate+PayCycleStartDate+PayCycleEndDate+FileNumber);
-		
 				EmployeeData empdata=new EmployeeData(PositionID,PositionStatus,workdate,workout,TimecardHours,PayCycleStartDate,PayCycleEndDate,FileNumber,EmployerName);
-				
 				employedatalist.add(empdata);
-			//	System.out.println(empdata);
 				i+=1;
 			}
 		} catch (FileNotFoundException e) {
@@ -272,15 +238,8 @@ public class ReadXlsx {
 	}
 
 	private static LocalDate convertStringDateToLocalDate(String stringworkdate) {
-		
-		//System.out.println("---"+stringworkdate);
 		Date date1=null;
 		try {
-//			if(date1==null)
-//			{
-//				date1 = new SimpleDateFormat("dd-MMM-yyyy").parse("01-jan-9090");
-//			}
-//			else {
 			if(stringworkdate.length()<2)
 			{
 				date1 = new SimpleDateFormat("dd-MMM-yyyy").parse("01-jan-9090");
@@ -304,9 +263,3 @@ public class ReadXlsx {
 }
 
 
-
-
-
-//String sDate1="31-sep-1998";  
-//Date date1=new SimpleDateFormat("dd-MMM-yyyy").parse(sDate1);  
-//System.out.println(sDate1+"\t"+date1);  

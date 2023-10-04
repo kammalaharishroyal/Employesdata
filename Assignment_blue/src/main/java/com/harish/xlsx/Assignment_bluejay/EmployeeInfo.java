@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 public class EmployeeInfo {
 	 String PositionID;
+	 String empName;
 	 HashMap<LocalDate,LocalTime> worktimeMapping;
 	@Override
 	public String toString() {
@@ -17,10 +18,11 @@ public class EmployeeInfo {
 		// TODO Auto-generated constructor stub
 		worktimeMapping=new HashMap<>();
 	}
-	public EmployeeInfo(String positionID, HashMap<LocalDate, LocalTime> worktimeMapping) {
+	public EmployeeInfo(String positionID, String empName, HashMap<LocalDate, LocalTime> worktimeMapping) {
 		super();
 		PositionID = positionID;
 		this.worktimeMapping = worktimeMapping;
+		this.empName=empName;
 	}
 	
 	 
