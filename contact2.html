@@ -1,35 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vegetable Market</title>
+    <title>User Profile</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
 
-        header {
-            background-color: aqua;
-            color: #fff;
+        .profile-container {
             text-align: center;
-            padding: 20px 0;
-        }
-
-        .container {
-            width: 100%;
-            margin: 10px;
+            width: 1000px;
             padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        h1,
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-info {
+            margin-top: 20px;
+        }
+
+        .bio {
+            margin-top: 10px;
+            color: #555;
+        }
+
+        .resume-section {
+            margin-top: 20px;
+        }
+
         h2 {
             color: #4CAF50;
         }
@@ -37,139 +52,27 @@
         p {
             color: #333;
         }
-
-        .vegetable-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .vegetable-list li {
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
-        }
-
-
-
-
-
-
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .button {
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 15px;
-            margin: 10px;
-            text-align: center;
-            text-decoration: none;
-            display: block;
-            width: 150px;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-
-        .button:hover {
-            background-color: #45a049;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-        .parent-container {
-            flex: 1;
-            display: flex;
-        }
-
-        .child-container {
-            border: 1px solid #ddd;
-            box-sizing: border-box;
-        }
-
-        .child-container:first-child {
-            flex: 1;
-        }
-
-        .child-container:last-child {
-            flex: 9;
-        }
-        
-
-        .profile-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
     </style>
-
-
-
-
-
-
 </head>
-
 <body>
 
-    <header>
-        <h1>HarishRoyal</h1>
+    <div class="profile-container">
         <img src="profile.jpeg" alt="Profile Image" class="profile-image">
-
-    </header>
-
-
-
-
-
-
-
-    <div class="parent-container">
-        <div class="child-container">
-            <div class="button-container">
-                <a href="index.html" class="button">Home</a>
-                <a href="Profile.html" class="button">Profile</a>
-                <a href="#" class="button">Contact</a>
-                <a href="res_img.png" class="button">Resume</a>
-                <a href="#" class="button">Explore</a>
-            </div>
+        <div class="user-info">
+            <h2>Harish Kammala</h2>
+            <p>Backend Developer</p>
         </div>
-        <div class="container">
-            <h2>Welcome </h2>
-            <p>Iam a Computer Science Student With Strong Programming And Problem Solving Skills</p>
+        <p class="bio">Passionate about creating Backend Application.</p>
 
-            <h2>Contact Us at below adress</h2>
-            <ul class="vegetable-list">
-                <p><strong>Name:</strong> Harish</p>
-            <p><strong>Email:</strong>kammalaharish23@gmail.com</p>
-            <p><strong>Phone:</strong> +91 9347779216</p>
-            <p><strong>Address:</strong> kalli palli nallacheruvu -515551,AP</p>
-        
-            </ul>
+        <div class="resume-section">
+            <h2>Resume</h2>
+            <p>Job Role: Backend Developer</p>
+            <p>Skills:Core Java,SpringBoot,Microservices,SQL,Python,dataStructures</p>
+            <p>Projects:backend for  DigitalLibrary and QuizApplication</p>
+            <p>Email: kammalaharish23@gmail.com</p>
+            <p>College: Madanapalle institue of technology and science</p>
         </div>
     </div>
 
-
-
 </body>
-
 </html>
